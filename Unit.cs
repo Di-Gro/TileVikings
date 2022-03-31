@@ -1,13 +1,14 @@
 class MUnit {
+
     UnitType type;
     PlayerType owner;
     MTile tile;
 
-    event OnHilight;
-    event OnUnHilight;
-    event OnAttack;
-    event OnMove;
     event OnRemove;
+    event OnHilight(Color color);
+    event OnUnHilight;
+    event OnAttack(AttackResult result);
+    event OnMove(List<Tile> path);
 
     public void Hilight(Color color);
     public void UnHilight();
@@ -16,4 +17,5 @@ class MUnit {
 
     // Устанавливает клетку к которой нужно идти несколько ходов.
     public void SetTarget(Tile tile);
+
 }

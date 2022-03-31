@@ -17,6 +17,10 @@ class InteractionManager {
     private IInteractor runned;
     private List<IInteractor> waitedInteractors;
 
+    public void AddInteraction(IInteractable interactable){}
+    public void RunIntaruction(IInteractable interactable){}
+    public bool HasInteraction(){}
+
     // Сменить интерактор
     event OnInteractableChange(IInteractable interactable) {
         OnInteractorStop();
@@ -30,9 +34,6 @@ class InteractionManager {
         runned?.RemoveEvents(this);
         runned?.Destroy();
     }
-    event AddInteraction(){}
-    event RunIntaruction(){}
-    event HasInteraction(){}
 
     {
     event OnTileFocus(Tile tile){}

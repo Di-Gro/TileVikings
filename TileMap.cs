@@ -10,18 +10,40 @@ class TileMap {
     private List<MUnit> units;
     private List<MMapObject> objects;
 
-    event CreateUnit(MUnit unit);
+    private bool activeMode = false;
+    private List<Tile> m_activeTiles;
+
+    event OnCreateUnit(MUnit unit);
+    event OnHilightTile(MTile tile, Color color);
+    event OnUnHilightTile(MTile tile);
 
     public void Init(TileMapData data);
 
     public bool CreateUnit(MTile tile, UnitType type, PlayerType owner);
     public void RemoveUnit(MTile tile);
 
-    public bool CreateObject(List<MTile> where, ClassRef classRef);
+    public bool CreateObject(List<MTile> where, MapObjectType type);
     public void RemoveObject(MTile tile);
 
-    // В методах Create и Remove можно создать объекты View представления,
-    // если не будет отдельного TileMapView.
+    // Сообщают View, что нужно подсветить клетку
+    public void HilightTile(MTile tile, Color color) => OnHilightTile?.Invoke(tile, color);
+    public void UnHilightTile(MTile tile) => OnUnHilightTile?.Invoke(tile);
+
+    // Возврщает соседнюю клетку в указанном направлении
+    public bool HasNext(MTile tile, Direction dir);
+    public MTile GetNext(MTile tile, Direction dir);
+
+    // Перемещает юнит из начальной точки пути в конечную.
+    // Если в двух клетках есть юниты, они меняются местами.
+    public void SwapUnits(List<Tile> path);
+
+    // Запоминает список активных клеток
+    // Помечает эти клетки как активные
+    // Устанавливает ActiveMode
+    // При снятии помечает сохраненные клетки неактивными
+    public void StartActiveMode(List<Tile> activeTiles);
+    public void StopActiveMode();
+    public bool HasActiveMode();
 
     public int IndexToInt(Vector2D index);
 
@@ -35,21 +57,19 @@ class TileMap {
         int distance = 0,
         int actionPoints = 0);
 
+    public List<Tile> FindPath(MTile fromTile, MTile toTile);
+
     private bool MatchRequest(MTile tile, TileRequest request);
 
-    // Убрать в Модель клетки ->
-    public bool HasNext(MTile tile, Direction dir);
-    public MTile GetNext(MTile tile, Direction dir);
-    // <-
-    // Убрать в MUnit
-    public void MoveUnit();
-    // <-
+    /////////////////////////////////////////////////
 
     public void Init(TileMapData data) {
         data - пока заменить на случаные типы клеток
 
         создать w на h клеток и добавить в список tiles
+        записать в клетку ее индекс
         создать список провинций
+        записать в провинции их индексы
         связать клетки и провинции:
         записать в каждый тайл ссылку на провинцию
         в провинциях создать списки со ссылками на их клетки
@@ -113,6 +133,21 @@ class TileMap {
 
         obj.tiles = null;
         Destroy(obj)
+    }
+
+    public void SwapUnits(List<Tile> path) {
+        Tile from = path.First();
+        Tile to = path.Last();
+
+        if(from.HasUnit())
+            from.unit.OnMove?.Invoke(path);
+
+        if(to.HasUnit())
+            to.unit.OnMove?.Invoke(path.reverse);
+
+        var tmp = from.unit;
+        from.unit = to.unit;
+        to.unit = tmp;
     }
 }
 
@@ -217,16 +252,7 @@ private bool MatchRequest(Tile tile, TileRequest request) {
     return res;
 }
 
-public void Move(List<Tile> path) {
-    Tile from = path.First();
-    Tile to = path.Last();
 
-    if(from.HasUnit())
-        from.unit.Move(path);
-
-    if(to.HasUnit())
-        to.unit.Move(path.reverse);
-}
 
 void Client() {
     Tile tile;

@@ -3,20 +3,38 @@ class TileMapView {
     // Cкомбинированные меши тайлов
     private Mesh tilesMesh;
 
-    // Cкомбинированные меши тайлов
+    // Cкомбинированные меши подсветки тайлов
     private Mesh tilesHilightMesh;
+
+    // Нужно хранить индексы сегментов, чтобы подсветить отдельный тайл
     private List<int> hilightSegmentIndexes;
 
-    public Dict<UnitType, ClassRef<IUnitView>> unitsPrefabs;
+    // Визуализация границ провинций
+    private List<Spline> provinceBorders;
 
-    //
-    private List<MProvince> provinces;
-    private List<MMapObject> objects; ?
+    public void Init(TileMapData data) {
+        TileMap.BindEvents(this);
 
-    public void Init(TileMapData data);
+        расставить меши клеток
+        объединить их в один меш
+        создать меши подсветки клеток
+        построить границы провинций
+    }
 
+    event OnHilightTile(MTile tile, Color color) {
+        взять сегмент этого тайла в меше подсветки
+        и изменить цвет вертексов
+        либо создать динамическме материалы для каждого сегмента
+        и изменить параметр цвета
+    }
 
-    public bool CreateObject(List<MTile> where, ClassRef classRef);
-    public void RemoveObject(MTile tile);
+    event OnUnHilightTile(MTile tile) {}
+
+    event OnUpdateProvince(MProvince prov) {
+        // Может измениться владелец провинции
+        // Или она моежт стать внутренней / внешней
+        перестроить границы провинции
+        обновить их цвет
+    }
 
 }

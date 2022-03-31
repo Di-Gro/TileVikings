@@ -13,10 +13,9 @@ class Battle {
         time.Init(new InteractionManager(),  new InteractionManager());
         time.StartUpdate();
 
-        battleTiles.Add(TileMap.GetProvinceTiles(prov1));
-        battleTiles.Add(TileMap.GetProvinceTiles(prov2));
-
-        TileMap.SetActiveTiles(battleTiles);
+        battleTiles.Add(prov1.tiles);
+        battleTiles.Add(prov2.tiles);
+        TileMap.StartActiveMode(battleTiles);
 
         for(var tile in battleTiles)
             if(tile.HasUnit())
@@ -50,6 +49,7 @@ class Battle {
 
             // Здесь можно расчитать результаты битвы, сколько юнитов погибло и т.д.
             // Чтобы выше это можно было посмотрет.
+            TileMap.StopActiveMode();
             OnBattleEnd?.Invoke();
         }
     }

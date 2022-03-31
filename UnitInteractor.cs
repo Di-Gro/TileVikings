@@ -79,9 +79,11 @@ class UnitInteractor : IInteractor {
         if(TryStartBattle(tile))
             return;
         UpdateSiege(tile);
-        unit.Move(pathOnFocus);
-        if(tile.HasUnit())
-            tile.unit.Move(pathOnFocus.reverse);
+        
+        TileMap.MoveUnit(pathOnFocus);
+        // unit.Move(pathOnFocus);
+        // if(tile.HasUnit())
+        //     tile.unit.Move(pathOnFocus.reverse);
 
         unit.BindEvents(this);
     }

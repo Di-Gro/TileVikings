@@ -1,11 +1,11 @@
-class IInteractor {
-    public void OnInit();
+interface IInteractor {
+    void OnInit();
 
-    public void Start();
-    public void Stop();
+    void Start();
+    void Stop();
 
-    event OnTileFocus;
-    event OnTileSelect;
-    event OnInteractableSelect;
-    event OnInteractableFocuse;
+    event OnTileFocus(Tile tile);
+    event OnTileSelect(Tile tile);
+    event OnInteractableSelect(IInteractable interactable);
+    event OnInteractableFocuse(IInteractable interactable);
 }

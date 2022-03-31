@@ -4,9 +4,6 @@ class Siege {
     UI ui;
 }
 
-TODO:
-// Можно убрать этот функционал в Province
-
 class SiegeManager {
 
     Dict<Province> sieges;
