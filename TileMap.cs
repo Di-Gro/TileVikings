@@ -1,25 +1,30 @@
+class TileMapData {
+    int width;
+    int height;
+    List<TileType> tiles;
+}
 
 class TileMap {
     private List<MTile> tiles;
+    private List<MProvince> provinces;
     private List<MUnit> units;
     private List<MMapObject> objects;
 
     public void Init(TileMapData data);
 
-    public void AddUnit();
-    public void RemoveUnit();
-    public void MoveUnit();
+    public bool CreateUnit(MTile tile);
+    public void RemoveUnit(MTile tile);
 
-    public void AddObject();
-    public void RemoveObject();
+    public bool CreateObject(List<MTile> where, ClassRef classRef);
+    public void RemoveObject(MTile tile);
+
+    // В методах Create и Remove можно создать объекты View представления,
+    // если не будет отдельного TileMapView. 
 
     public int IndexToInt(Vector2D index);
 
     public MTile GetTile(Vector2D index);
     public MTile GetTileAtMouse();
-
-    public bool HasNext(MTile tile, Direction dir);
-    public MTile GetNext(MTile tile, Direction dir);
 
     public List<MTile> FindTiles (
         MTile startTile,
@@ -29,53 +34,79 @@ class TileMap {
         int actionPoints = 0);
 
     private bool MatchRequest(MTile tile, TileRequest request);
+
+    // Убрать в Модель клетки ->
+    public bool HasNext(MTile tile, Direction dir);
+    public MTile GetNext(MTile tile, Direction dir);
+    // <-
+    // Убрать в MUnit
+    public void MoveUnit();
+    // <-
+
+    public void Init(TileMapData data) {
+        data - пока заменить на случаные типы клеток
+
+        создать w на h клеток и добавить в список tiles
+        создать список провинций
+        связать клетки и провинции:
+        записать в каждый тайл ссылку на провинцию
+        в провинциях создать списки со ссылками на их клетки
+    }
+
+    public bool CreateUnit(Tile tile, PlayerType owner) {
+        if(tile.HasUnit())
+            return false;
+
+        var unit = new MUnit();
+        units.Add(unit);
+        unit.tile = tile;
+        unit.owner = owner;
+
+        tile.unit = unit;
+        return true;
+    }
+
+    public void RemoveUnit(MTile tile) {
+        if(!tile.HasUnit())
+            return;
+
+        unit = tile.unit;
+        unit.tile = null;
+        tile.unit = null;
+        units.Remove(unit);
+        Destroy(unit)
+    }
+
+    public bool CreateObject(List<MTile> where, ClassRef classRef) {
+        for(var tile in where) {
+            if(tile.HasObject())
+                return false;
+        }
+        var obj = classRef.Create();
+        obj.tiles = where;
+        objects.Add(obj);
+
+        for(var tile in where)
+            tile.object = obj;
+
+        return true;
+    }
+
+    public void RemoveObject(MTile tile) {
+        if(!tile.HasObject())
+            return;
+
+        var obj = tile.object;
+        for(var tile in obj.tiles)
+            tile.object = null;
+
+        obj.tiles = null;
+        Destroy(obj)
+    }
 }
 
-class TileMapData {
-    int width;
-    int height;
-    List<TileType> tiles;
-}
-
-class MapObject {}
-
-class MUnit {
-    PlayerType owner;
-    MTile tile;
-
-    event OnHilight;
-    event OnUnHilight;
-    event OnAttack;
-
-    public void Hilight(Color color);
-    public void UnHilight();
-    public void Attack(AttackResult result);
-    public void Move(List<Tile> path);
-
-    // Устанавливает клетку к которой нужно идти несколько ходов. 
-    public void SetTarget(Tile tile);
-}
-
-class MTile {
-    public TileType type;
-    public Vector2D index;
-    public int arrayIndex;
-    public MUnit unit;
-    public MObject mapObject;
-    public MProvince province;
-
-    event OnHilight;
-    event OnUnHilight;
-
-    public bool HasUnit();
-
-    // Должны вызвать события, которые слушает TileView
-    public void Hilight(Color color);
-    public void UnHilight();
-}
-
-class MProvince {
-    PlayerType owner;
+class MapObject {
+    List<MTile> tiles;
 }
 
 struct Cost -> Int Vector {
@@ -177,20 +208,6 @@ private bool MatchRequest(Tile tile, TileRequest request) {
         res = res && ojectType == request.object;
     }
     return res;
-}
-
-public void Init(TileMapData data) {
-
-    for(int x = 0; in(0, data.width)) {
-        for(int y = 0; in(0, data.height)){
-            int index = IndexTpInt(x,y);
-            MTile tile = MTile(data.tiles[index]);
-            tiles.Add(tile);
-
-
-        }
-    }
-
 }
 
 public void Move(List<Tile> path) {
