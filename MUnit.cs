@@ -1,10 +1,13 @@
 class MUnit {
+    UnitType type;
     PlayerType owner;
     MTile tile;
 
     event OnHilight;
     event OnUnHilight;
     event OnAttack;
+    event OnMove;
+    event OnRemove;
 
     public void Hilight(Color color);
     public void UnHilight();

@@ -10,16 +10,18 @@ class TileMap {
     private List<MUnit> units;
     private List<MMapObject> objects;
 
+    event CreateUnit(MUnit unit);
+
     public void Init(TileMapData data);
 
-    public bool CreateUnit(MTile tile);
+    public bool CreateUnit(MTile tile, UnitType type, PlayerType owner);
     public void RemoveUnit(MTile tile);
 
     public bool CreateObject(List<MTile> where, ClassRef classRef);
     public void RemoveObject(MTile tile);
 
     // В методах Create и Remove можно создать объекты View представления,
-    // если не будет отдельного TileMapView. 
+    // если не будет отдельного TileMapView.
 
     public int IndexToInt(Vector2D index);
 
@@ -53,22 +55,27 @@ class TileMap {
         в провинциях создать списки со ссылками на их клетки
     }
 
-    public bool CreateUnit(Tile tile, PlayerType owner) {
+    public bool CreateUnit(MTile tile, UnitType type, PlayerType owner) {
         if(tile.HasUnit())
             return false;
 
         var unit = new MUnit();
         units.Add(unit);
         unit.tile = tile;
+        unit.type = type;
         unit.owner = owner;
 
         tile.unit = unit;
+
+        OnUnitCreate?.Invoke(unit);
         return true;
     }
 
     public void RemoveUnit(MTile tile) {
         if(!tile.HasUnit())
             return;
+
+        unit.OnRemove?.Invoke();
 
         unit = tile.unit;
         unit.tile = null;
@@ -77,18 +84,20 @@ class TileMap {
         Destroy(unit)
     }
 
-    public bool CreateObject(List<MTile> where, ClassRef classRef) {
+    public bool CreateObject(List<MTile> where, MapObjectType type) {
         for(var tile in where) {
             if(tile.HasObject())
                 return false;
         }
-        var obj = classRef.Create();
+        var obj = new MapObject();
+        obj.type = type;
         obj.tiles = where;
         objects.Add(obj);
 
         for(var tile in where)
             tile.object = obj;
 
+        OnCreateObject?.Invoke(obj);
         return true;
     }
 
@@ -97,16 +106,14 @@ class TileMap {
             return;
 
         var obj = tile.object;
+        obj.OnRemove?.Invoke();
+
         for(var tile in obj.tiles)
             tile.object = null;
 
         obj.tiles = null;
         Destroy(obj)
     }
-}
-
-class MapObject {
-    List<MTile> tiles;
 }
 
 struct Cost -> Int Vector {
