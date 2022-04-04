@@ -5,50 +5,54 @@ class TileMapData {
 }
 
 class TileMap {
-    private List<MTile> tiles;
-    private List<MProvince> provinces;
-    private List<MUnit> units;
+    // DONE // private List<MTile> tiles;
+    // DONE // private List<MProvince> provinces;
+    // DONE // private List<MUnit> units;
     private List<MMapObject> objects;
 
-    private bool activeMode = false;
-    private List<Tile> m_activeTiles;
+    // DONE // private bool activeMode = false;
+    // DONE // private List<Tile> m_activeTiles;
 
-    event OnCreateUnit(MUnit unit);
-    event OnHilightTile(MTile tile, Color color);
-    event OnUnHilightTile(MTile tile);
+    // DONE // event OnCreateUnit(MUnit unit);
+    // DONE // event OnHilightTile(MTile tile, Color color);
+    // DONE // event OnUnHilightTile(MTile tile);
+    // DONE // event OnActiveModeStart();
+    // DONE // event OnActiveModeStop();
 
-    public void Init(TileMapData data);
+    // DONE // public void Init(TileMapData data);
 
-    public bool CreateUnit(MTile tile, UnitType type, PlayerType owner);
-    public void RemoveUnit(MTile tile);
+    // DONE // public bool CreateUnit(MTile tile, UnitType type, PlayerType owner);
+    // DONE // public void RemoveUnit(MTile tile);
 
     public bool CreateObject(List<MTile> where, MapObjectType type);
     public void RemoveObject(MTile tile);
 
     // Сообщают View, что нужно подсветить клетку
-    public void HilightTile(MTile tile, Color color) => OnHilightTile?.Invoke(tile, color);
-    public void UnHilightTile(MTile tile) => OnUnHilightTile?.Invoke(tile);
+    // DONE // public void HilightTile(MTile tile, Color color) => OnHilightTile?.Invoke(tile, color);
+    // DONE // public void UnHilightTile(MTile tile) => OnUnHilightTile?.Invoke(tile);
 
     // Возврщает соседнюю клетку в указанном направлении
-    public bool HasNext(MTile tile, Direction dir);
-    public MTile GetNext(MTile tile, Direction dir);
+    // public bool HasNext(MTile tile, Direction dir); Объединил с GetNext()
+    // DONE // public MTile GetNext(MTile tile, Direction dir);
 
     // Перемещает юнит из начальной точки пути в конечную.
     // Если в двух клетках есть юниты, они меняются местами.
-    public void SwapUnits(List<Tile> path);
+    // DONE // public void SwapUnits(List<Tile> path);
 
     // Запоминает список активных клеток
     // Помечает эти клетки как активные
     // Устанавливает ActiveMode
     // При снятии помечает сохраненные клетки неактивными
-    public void StartActiveMode(List<Tile> activeTiles);
-    public void StopActiveMode();
-    public bool HasActiveMode();
+    // DONE // public void StartActiveMode(List<Tile> activeTiles);
+    // DONE // public void StopActiveMode();
+    // DONE // public bool HasActiveMode();
+    // DONE //public List<Tile> GetActiveTiles();
 
-    public int IndexToInt(Vector2D index);
+    // DONE // public int IndexToInt(Vector2D index);
+    // DONE // public bool IsValidIndex(Vector2D index);
 
-    public MTile GetTile(Vector2D index);
-    public MTile GetTileAtMouse();
+    // DONE // public MTile GetTile(Vector2D index);
+    //public MTile GetTileAtMouse(); убрал в interaclitn helper
 
     public List<MTile> FindTiles (
         MTile startTile,
@@ -64,44 +68,44 @@ class TileMap {
     /////////////////////////////////////////////////
 
     public void Init(TileMapData data) {
-        data - пока заменить на случаные типы клеток
+        //data - пока заменить на случаные типы клеток
 
-        создать w на h клеток и добавить в список tiles
-        записать в клетку ее индекс
-        создать список провинций
-        записать в провинции их индексы
-        связать клетки и провинции:
-        записать в каждый тайл ссылку на провинцию
-        в провинциях создать списки со ссылками на их клетки
+        // создать w на h клеток и добавить в список tiles
+        // записать в клетку ее индекс
+        // создать список провинций
+        // записать в провинции их индексы
+        // связать клетки и провинции:
+        // записать в каждый тайл ссылку на провинцию
+        // в провинциях создать списки со ссылками на их клетки
     }
 
     public bool CreateUnit(MTile tile, UnitType type, PlayerType owner) {
-        if(tile.HasUnit())
-            return false;
+        //if(tile.HasUnit())
+            //return false;
 
-        var unit = new MUnit();
-        units.Add(unit);
-        unit.tile = tile;
-        unit.type = type;
-        unit.owner = owner;
+        //var unit = new MUnit();
+        //units.Add(unit);
+        //unit.tile = tile;
+        //unit.type = type;
+        //unit.owner = owner;
 
-        tile.unit = unit;
+        //tile.unit = unit;
 
-        OnUnitCreate?.Invoke(unit);
-        return true;
+        //OnUnitCreate?.Invoke(unit);
+        //return true;
     }
 
     public void RemoveUnit(MTile tile) {
-        if(!tile.HasUnit())
-            return;
+        //if(!tile.HasUnit())
+            //return;
 
-        unit.OnRemove?.Invoke();
+        //unit.OnRemove?.Invoke();
 
-        unit = tile.unit;
-        unit.tile = null;
-        tile.unit = null;
-        units.Remove(unit);
-        Destroy(unit)
+        //unit = tile.unit;
+        //unit.tile = null;
+        //tile.unit = null;
+        //units.Remove(unit);
+        Destroy(unit) // Кажется, UObject разрушаются сборщиком мусора
     }
 
     public bool CreateObject(List<MTile> where, MapObjectType type) {
@@ -136,18 +140,18 @@ class TileMap {
     }
 
     public void SwapUnits(List<Tile> path) {
-        Tile from = path.First();
-        Tile to = path.Last();
+        //Tile from = path.First();
+        //Tile to = path.Last();
 
-        if(from.HasUnit())
-            from.unit.OnMove?.Invoke(path);
+        //if(from.HasUnit())
+            //from.unit.OnMove?.Invoke(path);
 
-        if(to.HasUnit())
-            to.unit.OnMove?.Invoke(path.reverse);
+        //if(to.HasUnit())
+            //to.unit.OnMove?.Invoke(path.reverse);
 
-        var tmp = from.unit;
-        from.unit = to.unit;
-        to.unit = tmp;
+        //var tmp = from.unit;
+        //from.unit = to.unit;
+        //to.unit = tmp;
     }
 }
 

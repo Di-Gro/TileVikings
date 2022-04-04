@@ -6,7 +6,7 @@ class Siege {
 
 class SiegeManager {
 
-    Dict<Province> sieges;
+    Dict<Province, Siege> sieges;
 
     event OnStartSiege;
     event OnStopSiege;

@@ -1,9 +1,9 @@
 class MProvince {
-    int index;
-    PlayerType owner;
-    List<MTile> tiles;
+    IntVector index;
+    // DONE // PlayerType owner;
+    // DONE // List<MTile> tiles;
 
-    public bool HasUnit(PlayerType owner);
-    public List<MUnit> GetUnits(PlayerType owner);
+    // DONE // public bool HasUnit(PlayerType owner);
+    // DONE // public List<MUnit> GetUnits(PlayerType owner);
 
 }

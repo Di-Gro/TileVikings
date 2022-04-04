@@ -1,24 +1,24 @@
 class TileMapView {
 
     // Cкомбинированные меши тайлов
-    private Mesh tilesMesh;
+    // DONE // private Mesh tilesMesh;
 
     // Cкомбинированные меши подсветки тайлов
-    private Mesh tilesHilightMesh;
+    // DONE // private Mesh tilesHilightMesh;
 
     // Нужно хранить индексы сегментов, чтобы подсветить отдельный тайл
-    private List<int> hilightSegmentIndexes;
+    // private List<int> hilightSegmentIndexes; ну пригодилось
 
     // Визуализация границ провинций
-    private List<Spline> provinceBorders;
+    // DONE // private List<Spline> provinceBorders;
 
     public void Init(TileMapData data) {
         TileMap.BindEvents(this);
 
-        расставить меши клеток
-        объединить их в один меш
-        создать меши подсветки клеток
-        построить границы провинций
+        //расставить меши клеток
+        //объединить их в один меш
+        //создать меши подсветки клеток
+        //построить границы провинций
     }
 
     event OnHilightTile(MTile tile, Color color) {
@@ -33,8 +33,8 @@ class TileMapView {
     event OnUpdateProvince(MProvince prov) {
         // Может измениться владелец провинции
         // Или она моежт стать внутренней / внешней
-        перестроить границы провинции
-        обновить их цвет
+        //перестроить границы провинции
+        //обновить их цвет
     }
 
 }

@@ -35,10 +35,10 @@ class InteractionManager {
         runned?.Destroy();
     }
 
-    {
-    event OnTileFocus(Tile tile){}
-    event OnTileSelect(Tile tile){}
-    event OnInteractableFocuse(IInteractable interactable){}
-    event OnInteractableSelect(IInteractable interactable){}
-    } => runned;
+    // {
+    // event OnTileFocus(Tile tile){}
+    // event OnTileSelect(Tile tile){}
+    // event OnInteractableFocuse(IInteractable interactable){}
+    // event OnInteractableSelect(IInteractable interactable){}
+    // } => runned;
 }
