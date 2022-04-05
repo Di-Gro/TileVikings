@@ -29,8 +29,7 @@
 Классы модели (Mvc), используются моделью и не могут быть инстанцированы на сцене. Наслудуются от Object.<br>
 Инстанцируются TileMap, описывают состояние карты в runtime-е и используются для работы с ней. 
 
-### M_MapObject
-Пока не реализован.
+### M_MapObject (не реализован)
 
 ### M_Province
 - index - индекс провинции в TileMapData
@@ -72,7 +71,7 @@
 - Remove
 - Move (path: list of tiles or world-space points)
 - Attack
-- Hilight
+- Hilight(color)
 - Un Hilight
  
 # BP_
