@@ -12,12 +12,12 @@ class UnitView : IUnitView, IInteractable {
     MUnit unit;
 
     public void Init(MUnit unit) {
-        unit.BindEvents(this);
+        //unit.BindEvents(this);
     }
 
     event OnRemove() {
         unit.RemoveEvents(this);
-        Destroy(this);
+        //Destroy(this);
     }
 
     event OnHilight(Color color) {}

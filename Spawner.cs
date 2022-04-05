@@ -4,13 +4,13 @@ class Spawner {
     public Dict<MapObjectType, ClassRef<IMapObject>> objectsPrefabs;
 
     event OnBeginPlay() {
-        TileMap.BindEvents(this);
+        //TileMap.BindEvents(this);
     }
 
     event CreateUnit(MUnit unit) {
-        var classRef = unitsPrefabs[unit.type];
-        var unitView = classRef.Create();
-        unitView.Init(unit);
+        //var classRef = unitsPrefabs[unit.type];
+        //var unitView = classRef.Create();
+        //unitView.Init(unit);
     }
 
     event CreateObject(MapObjectType type, Vector3 position) {
